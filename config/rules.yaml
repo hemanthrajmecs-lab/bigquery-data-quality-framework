@@ -1,0 +1,23 @@
+# One entry per table. Only configure the checks you care about,
+# anything you leave out just doesn't run.
+
+tables:
+  - name: myproject.mydataset.my_table
+    checks:
+      null_check:
+        columns: [customer_id, transaction_date]
+        threshold: 0.01          # fail if more than 1% nulls
+      duplicate_check:
+        key_columns: [transaction_id]
+      range_check:
+        - column: amount
+          min: 0
+          max: 1000000
+      freshness_check:
+        max_hours_since_update: 24
+      schema_check:
+        expected_columns:
+          - name: transaction_id
+            type: STRING
+          - name: amount
+            type: FLOAT64
